@@ -1,0 +1,7 @@
+(define (ldstep n a)
+  (cond ((= (remainder n a) 0) a)
+	((> (square a) n) n)
+	(else (ldstep n (+ a 1)))
+   )
+ )
+(define (ld n) (ldstep n 2))

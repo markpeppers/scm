@@ -1,0 +1,33 @@
+(define dx .0001)
+(define tolerance .0001)
+(define (average x y)
+  (/ (+ x y) 2))
+(define (average-damp f)
+  (lambda (x) (average x (f x))))
+(define (fixed-point f guess)
+  (define (close-enough? x y) (< (abs (- x y)) tolerance))
+  (let ((next (f guess)))
+    (newline)
+    (display next)
+    (if (close-enough? next guess)
+      next
+      (fixed-point f next))))
+(define (deriv g)
+  (lambda (x)
+    (/ (- (g (+ x dx)) (g x))
+       dx)))
+(define (newtons-transform g)
+  (lambda (x)
+    (- x (/ (g x) ((deriv g) x)))))
+(define (newtons-method g guess)
+  (fixed-point (newtons-transform g) guess))
+
+; Exercise 1.40
+(define (cubic a b c)
+  (lambda (x)
+    (+
+      (cube x)
+      (* a (square x))
+      (* b x)
+      c)))
+
